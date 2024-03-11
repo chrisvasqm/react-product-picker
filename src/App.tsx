@@ -2,6 +2,8 @@ import './App.css'
 import { useState } from 'react';
 import Product from './models/Product';
 import ProductPicker from './components/ProductPicker';
+import { Box, Heading, VStack } from '@chakra-ui/react';
+import ProductTable from './components/ProductTable';
 
 function App() {
     const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined)
@@ -32,15 +34,21 @@ function App() {
         setAddedProducts(addedProducts.map(product => product.id === id ? { ...product, toBuy: toBuy } : product))
     }
 
-    return <ProductPicker
-        products={products}
-        addedProducts={addedProducts}
-        selectedProduct={selectedProduct}
-        onMenuItemClicked={handleMenuItemClick}
-        onAddProduct={handleAddProduct}
-        onDeleteProduct={handleDelete}
-        onInputChange={handleOnInputChange}
-    />
+    return <Box h='100vh' display={'flex'} justifyContent={'center'}>
+        <VStack>
+            <Heading as='h2'>Product Picker</Heading>
+            <ProductPicker
+                products={products}
+                selectedProduct={selectedProduct}
+                onMenuItemClicked={handleMenuItemClick}
+                onAddProduct={handleAddProduct}
+            />
+            <ProductTable
+                addedProducts={addedProducts}
+                onDeleteProduct={handleDelete}
+                onInputChange={handleOnInputChange} />
+        </VStack>
+    </Box>
 }
 
 export default App
