@@ -1,8 +1,7 @@
-import { Box, Button, HStack, Heading, Input, Menu, MenuButton, MenuItem, MenuList, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
-import { ChevronDownIcon } from '@chakra-ui/icons'
 import './App.css'
 import { useState } from 'react';
 import Product from './models/Product';
+import ProductPicker from './components/ProductPicker';
 
 function App() {
     const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined)
@@ -27,59 +26,21 @@ function App() {
         setAddedProducts([...reducedProducts])
     }
 
-    const handleOnChange = (id: number, toBuy: number) => {
+    const handleOnInputChange = (id: number, toBuy: number) => {
         if (isNaN(toBuy)) return;
 
         setAddedProducts(addedProducts.map(product => product.id === id ? { ...product, toBuy: toBuy } : product))
     }
 
-    return (
-        <Box h='100vh' display={'flex'} justifyContent={'center'}>
-            <Stack spacing={3} w={['md', 'lg']} >
-                <Heading as='h2'>Product Picker</Heading>
-
-                <HStack>
-                    <Box flex={2}>
-                        <Menu>
-                            <MenuButton width='full' as={Button} rightIcon={<ChevronDownIcon />}>{selectedProduct ? <p>{selectedProduct.name}</p> : <p>Pick a product</p>}</MenuButton>
-                            <MenuList>
-                                {products.map(product => <MenuItem key={product.id} onClick={() => handleMenuItemClick(product)}>Name: {product.name} - Quantity: {product.quantity}</MenuItem>)}
-                            </MenuList>
-                        </Menu>
-                    </Box>
-                    <Box flex={1}>
-                        <Button width='full' onClick={() => selectedProduct && handleAddProduct(selectedProduct)}>Add</Button>
-                    </Box>
-                </HStack>
-
-                <TableContainer>
-                    <Table variant='simple'>
-                        <Thead>
-                            <Tr>
-                                <Th>Name</Th>
-                                <Th isNumeric>Quantitiy</Th>
-                                <Th>To Buy</Th>
-                                <Th>Action</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {addedProducts && addedProducts.map(product => <Tr>
-                                <Td>{product.name}</Td>
-                                <Td isNumeric>{product.quantity}</Td>
-                                <Td><Input
-                                    id='toBuy'
-                                    type='number'
-                                    value={product.toBuy}
-                                    onChange={event => handleOnChange(product.id, parseInt(event.target.value))}
-                                /></Td>
-                                <Td><Button onClick={() => handleDelete(product.id)}>Delete</Button></Td>
-                            </Tr>)}
-                        </Tbody>
-                    </Table>
-                </TableContainer>
-            </Stack>
-        </Box >
-    )
+    return <ProductPicker
+        products={products}
+        addedProducts={addedProducts}
+        selectedProduct={selectedProduct}
+        onMenuItemClicked={handleMenuItemClick}
+        onAddProduct={handleAddProduct}
+        onDeleteProduct={handleDelete}
+        onInputChange={handleOnInputChange}
+    />
 }
 
 export default App
