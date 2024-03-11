@@ -2,7 +2,7 @@ import './App.css'
 import { useState } from 'react';
 import Product from './models/Product';
 import ProductPicker from './components/ProductPicker';
-import { Box, Heading, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, VStack } from '@chakra-ui/react';
 import ProductTable from './components/ProductTable';
 
 function App() {
@@ -30,9 +30,13 @@ function App() {
     }
 
     const handleOnInputChange = (id: number, toBuy: number) => {
-        if (isNaN(toBuy)) return;
+        if (isNaN(toBuy)) return
 
         setAddedProducts(addedProducts.map(product => product.id === id ? { ...product, toBuy: toBuy } : product))
+    }
+
+    const handleClear = () => {
+        setAddedProducts([])
     }
 
     return <Box h='100vh' display={'flex'} justifyContent={'center'}>
@@ -44,10 +48,12 @@ function App() {
                 onMenuItemClicked={handleMenuItemClick}
                 onAddProduct={handleAddProduct}
             />
-            <ProductTable
+            {addedProducts.length && <ProductTable
                 addedProducts={addedProducts}
                 onDeleteProduct={handleDelete}
-                onInputChange={handleOnInputChange} />
+                onInputChange={handleOnInputChange} />}
+
+            {addedProducts.length && <Button onClick={handleClear}>Clear</Button>}
         </VStack>
     </Box>
 }
