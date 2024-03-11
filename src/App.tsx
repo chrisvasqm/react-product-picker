@@ -10,7 +10,8 @@ function App() {
     const [addedProducts, setAddedProducts] = useState<Product[]>([])
     const products = [
         { id: 1, name: "Product 1", toBuy: 0, quantity: 10 },
-        { id: 2, name: "Product 2", toBuy: 0, quantity: 3 }
+        { id: 2, name: "Product 2", toBuy: 0, quantity: 3 },
+        { id: 3, name: "Product 3", toBuy: 0, quantity: 5 }
     ]
 
     const handleMenuItemClick = (product: Product) => {
